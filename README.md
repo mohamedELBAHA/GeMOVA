@@ -29,7 +29,7 @@ If you use GeMOVA in academic work, please cite our paper (preprint coming soon)
 Live Demo
 GeMOVA Paper (coming soon)
 
-## 🧑‍🔬 Authors & Maintainers
+## 🧑‍🔬 Authors
 
 GeMOVA was designed and developed by:
 - Mohamed El Baha & Fouad Oubari, please feel free to reach out via LinkedIn or email.
