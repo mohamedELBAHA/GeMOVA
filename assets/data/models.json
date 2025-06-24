@@ -1,0 +1,445 @@
+{
+    "metadata": {
+        "version": "1.0.0",
+        "lastUpdated": "2024-01-15",
+        "contributors": ["Votre Nom"],
+        "description": "Base de données interactive des modèles génératifs en IA"
+    },
+    "categories": {
+        "VAE": {
+            "name": "Variational Autoencoders",
+            "color": "#3b82f6",
+            "description": "Modèles basés sur l'encodage variationnel"
+        },
+        "GAN": {
+            "name": "Generative Adversarial Networks",
+            "color": "#22c55e",
+            "description": "Modèles basés sur l'apprentissage adversarial"
+        },
+        "Diffusion": {
+            "name": "Diffusion Models",
+            "color": "#f97316",
+            "description": "Modèles basés sur la diffusion et le débruitage"
+        },
+        "Transformer": {
+            "name": "Transformer-based Models",
+            "color": "#a855f7",
+            "description": "Modèles basés sur l'architecture Transformer"
+        },
+        "Flow": {
+            "name": "Flow-based Models",
+            "color": "#2dd4bf",
+            "description": "Modèles basés sur les flux normalisants"
+        },
+        "EBM": {
+            "name": "Energy-Based Models",
+            "color": "#ef4444",
+            "description": "Modèles basés sur l'énergie"
+        }
+    },
+    "linkTypes": {
+        "improves-upon": {
+            "label": "Améliore",
+            "color": "#6ee7b7",
+            "description": "Amélioration directe du modèle précédent"
+        },
+        "variation-of": {
+            "label": "Variation de",
+            "color": "#fca5a5",
+            "description": "Variation ou adaptation du modèle original"
+        },
+        "used-in": {
+            "label": "Utilisé dans",
+            "color": "#c084fc",
+            "description": "Composant utilisé dans un autre modèle"
+        },
+        "inspired-by": {
+            "label": "Inspiré par",
+            "color": "#fde047",
+            "description": "Inspiration conceptuelle"
+        },
+        "combines": {
+            "label": "Combine",
+            "color": "#7dd3c0",
+            "description": "Combine plusieurs approches"
+        }
+    },
+    "nodes": [
+        {
+            "id": "VAE",
+            "name": "VAE",
+            "fullName": "Variational Autoencoder",
+            "category": "VAE",
+            "year": 2013,
+            "description": "Modèle génératif probabiliste qui apprend une représentation latente des données en maximisant une borne inférieure de la vraisemblance (ELBO). Combine un encodeur qui produit une distribution latente et un décodeur qui reconstruit les données.",
+            "mainIdea": "Encoder les données dans un espace latent probabiliste (moyenne et variance) et décoder pour reconstruire. Utilise la reparametrization trick pour permettre la rétropropagation à travers l'échantillonnage stochastique.",
+            "keyContributions": [
+                "Introduction du framework variationnel pour les autoencodeurs",
+                "Reparametrization trick pour l'entraînement",
+                "ELBO comme fonction objectif"
+            ],
+            "papers": [
+                {
+                    "title": "Auto-Encoding Variational Bayes",
+                    "authors": ["Kingma, D.P.", "Welling, M."],
+                    "year": 2013,
+                    "url": "https://arxiv.org/abs/1312.6114",
+                    "venue": "ICLR 2014"
+                }
+            ],
+            "code": [
+                {
+                    "language": "PyTorch",
+                    "url": "https://github.com/pytorch/examples/tree/master/vae"
+                }
+            ],
+            "metrics": {
+                "citations": 25000,
+                "influence": 10
+            },
+            "tags": ["probabilistic", "unsupervised", "representation-learning"],
+            "size": 30
+        },
+        {
+            "id": "Beta-VAE",
+            "name": "β-VAE",
+            "fullName": "Beta-VAE",
+            "category": "VAE",
+            "year": 2017,
+            "description": "Extension du VAE qui encourage l'apprentissage de représentations disentangled en ajoutant un hyperparamètre β > 1 au terme de divergence KL, forçant une représentation plus factorisée.",
+            "mainIdea": "Pondérer le terme KL avec β > 1 pour forcer une représentation plus factorisée dans l'espace latent. Permet de contrôler le trade-off entre reconstruction et disentanglement.",
+            "keyContributions": [
+                "Introduction du paramètre β pour contrôler le disentanglement",
+                "Démonstration que β > 1 encourage les représentations factorisées",
+                "Métriques pour évaluer le disentanglement"
+            ],
+            "papers": [
+                {
+                    "title": "β-VAE: Learning Basic Visual Concepts with a Constrained Variational Framework",
+                    "authors": ["Higgins, I.", "Matthey, L.", "Pal, A.", "et al."],
+                    "year": 2017,
+                    "url": "https://openreview.net/forum?id=Sy2fzU9gl",
+                    "venue": "ICLR 2017"
+                }
+            ],
+            "code": [
+                {
+                    "language": "TensorFlow",
+                    "url": "https://github.com/google-research/disentanglement_lib"
+                }
+            ],
+            "metrics": {
+                "citations": 3500,
+                "influence": 8
+            },
+            "tags": ["disentanglement", "interpretability", "representation-learning"],
+            "size": 20
+        },
+        {
+            "id": "VQ-VAE",
+            "name": "VQ-VAE",
+            "fullName": "Vector Quantized VAE",
+            "category": "VAE",
+            "year": 2017,
+            "description": "VAE avec un espace latent discret utilisant la quantification vectorielle. Remplace la distribution gaussienne continue par un codebook discret appris.",
+            "mainIdea": "Utiliser un codebook de vecteurs discrets et assigner chaque encoding au vecteur le plus proche. Permet une meilleure compression et évite le posterior collapse.",
+            "keyContributions": [
+                "Introduction de la quantification vectorielle dans les VAE",
+                "Straight-through estimator pour la rétropropagation",
+                "Meilleure qualité de reconstruction que VAE standard"
+            ],
+            "papers": [
+                {
+                    "title": "Neural Discrete Representation Learning",
+                    "authors": ["van den Oord, A.", "Vinyals, O.", "Kavukcuoglu, K."],
+                    "year": 2017,
+                    "url": "https://arxiv.org/abs/1711.00937",
+                    "venue": "NeurIPS 2017"
+                }
+            ],
+            "code": [
+                {
+                    "language": "PyTorch",
+                    "url": "https://github.com/zalandoresearch/pytorch-vq-vae"
+                }
+            ],
+            "metrics": {
+                "citations": 4200,
+                "influence": 9
+            },
+            "tags": ["discrete-latent", "compression", "quantization"],
+            "size": 20
+        },
+        {
+            "id": "VQ-VAE-2",
+            "name": "VQ-VAE-2",
+            "fullName": "Hierarchical VQ-VAE",
+            "category": "VAE",
+            "year": 2019,
+            "description": "Version hiérarchique de VQ-VAE avec plusieurs niveaux de quantification pour capturer différentes échelles d'information.",
+            "mainIdea": "Hiérarchie de codebooks avec priors autorégressifs. Le niveau supérieur capture la structure globale, les niveaux inférieurs les détails locaux.",
+            "keyContributions": [
+                "Architecture hiérarchique multi-échelle",
+                "Priors autorégressifs puissants (PixelCNN)",
+                "Génération d'images haute résolution de qualité"
+            ],
+            "papers": [
+                {
+                    "title": "Generating Diverse High-Fidelity Images with VQ-VAE-2",
+                    "authors": ["Razavi, A.", "van den Oord, A.", "Vinyals, O."],
+                    "year": 2019,
+                    "url": "https://arxiv.org/abs/1906.00446",
+                    "venue": "NeurIPS 2019"
+                }
+            ],
+            "metrics": {
+                "citations": 1800,
+                "influence": 7
+            },
+            "tags": ["hierarchical", "high-resolution", "autoregressive-prior"],
+            "size": 18
+        },
+        {
+            "id": "GAN",
+            "name": "GAN",
+            "fullName": "Generative Adversarial Network",
+            "category": "GAN",
+            "year": 2014,
+            "description": "Framework révolutionnaire avec deux réseaux en compétition : un générateur qui crée des données synthétiques et un discriminateur qui distingue les vraies des fausses données.",
+            "mainIdea": "Entraînement adversarial via un jeu minimax. Le générateur G minimise log(1-D(G(z))) tandis que le discriminateur D maximise log(D(x)) + log(1-D(G(z))).",
+            "keyContributions": [
+                "Introduction du paradigme adversarial",
+                "Génération implicite sans vraisemblance explicite",
+                "Qualité de génération supérieure aux modèles précédents"
+            ],
+            "papers": [
+                {
+                    "title": "Generative Adversarial Nets",
+                    "authors": ["Goodfellow, I.", "Pouget-Abadie, J.", "Mirza, M.", "et al."],
+                    "year": 2014,
+                    "url": "https://arxiv.org/abs/1406.2661",
+                    "venue": "NeurIPS 2014"
+                }
+            ],
+            "code": [
+                {
+                    "language": "PyTorch",
+                    "url": "https://github.com/eriklindernoren/PyTorch-GAN"
+                }
+            ],
+            "metrics": {
+                "citations": 50000,
+                "influence": 10
+            },
+            "tags": ["adversarial", "implicit-generation", "game-theory"],
+            "size": 30
+        },
+        {
+            "id": "DCGAN",
+            "name": "DCGAN",
+            "fullName": "Deep Convolutional GAN",
+            "category": "GAN",
+            "year": 2015,
+            "description": "Première architecture GAN stable utilisant des convolutions. A établi les bonnes pratiques architecturales pour les GANs.",
+            "mainIdea": "Remplacer les couches fully-connected par des convolutions. Utiliser des convolutions transposées dans G, stride convolutions dans D, batch norm, et pas de pooling.",
+            "keyContributions": [
+                "Guidelines architecturales pour GANs stables",
+                "Démonstration de représentations apprises significatives",
+                "Arithmétique vectorielle dans l'espace latent"
+            ],
+            "papers": [
+                {
+                    "title": "Unsupervised Representation Learning with Deep Convolutional Generative Adversarial Networks",
+                    "authors": ["Radford, A.", "Metz, L.", "Chintala, S."],
+                    "year": 2015,
+                    "url": "https://arxiv.org/abs/1511.06434",
+                    "venue": "ICLR 2016"
+                }
+            ],
+            "metrics": {
+                "citations": 15000,
+                "influence": 9
+            },
+            "tags": ["convolutional", "architectural-guidelines", "stable-training"],
+            "size": 22
+        },
+        {
+            "id": "StyleGAN",
+            "name": "StyleGAN",
+            "fullName": "Style-based GAN",
+            "category": "GAN",
+            "year": 2018,
+            "description": "Architecture GAN révolutionnaire permettant un contrôle fin et découplé du style à différentes échelles spatiales.",
+            "mainIdea": "Mapping network f:Z→W suivi d'AdaIN pour injecter le style à chaque couche. Permet de contrôler séparément les attributs grossiers (pose) et fins (texture).",
+            "keyContributions": [
+                "Mapping network pour un espace latent W plus disentangled",
+                "Style injection via Adaptive Instance Normalization",
+                "Mixing regularization et contrôle hiérarchique du style"
+            ],
+            "papers": [
+                {
+                    "title": "A Style-Based Generator Architecture for Generative Adversarial Networks",
+                    "authors": ["Karras, T.", "Laine, S.", "Aila, T."],
+                    "year": 2018,
+                    "url": "https://arxiv.org/abs/1812.04948",
+                    "venue": "CVPR 2019"
+                }
+            ],
+            "code": [
+                {
+                    "language": "TensorFlow",
+                    "url": "https://github.com/NVlabs/stylegan"
+                }
+            ],
+            "metrics": {
+                "citations": 8000,
+                "influence": 10
+            },
+            "tags": ["style-control", "high-quality", "disentanglement"],
+            "size": 25
+        },
+        {
+            "id": "DDPM",
+            "name": "DDPM",
+            "fullName": "Denoising Diffusion Probabilistic Models",
+            "category": "Diffusion",
+            "year": 2020,
+            "description": "Modèle génératif basé sur l'inversion d'un processus de diffusion qui ajoute progressivement du bruit gaussien aux données.",
+            "mainIdea": "Processus forward fixe q(x_t|x_{t-1}) ajoutant du bruit, processus inverse p_θ(x_{t-1}|x_t) appris pour débruiter. Objectif simplifié : prédire le bruit ε.",
+            "keyContributions": [
+                "Simplification de l'objectif variationnel",
+                "Connection avec score matching",
+                "Qualité supérieure aux GANs sur plusieurs métriques"
+            ],
+            "papers": [
+                {
+                    "title": "Denoising Diffusion Probabilistic Models",
+                    "authors": ["Ho, J.", "Jain, A.", "Abbeel, P."],
+                    "year": 2020,
+                    "url": "https://arxiv.org/abs/2006.11239",
+                    "venue": "NeurIPS 2020"
+                }
+            ],
+            "code": [
+                {
+                    "language": "PyTorch",
+                    "url": "https://github.com/hojonathanho/diffusion"
+                }
+            ],
+            "metrics": {
+                "citations": 7000,
+                "influence": 10
+            },
+            "tags": ["denoising", "probabilistic", "score-based"],
+            "size": 30
+        },
+        {
+            "id": "StableDiffusion",
+            "name": "Stable Diffusion",
+            "fullName": "Latent Diffusion Model",
+            "category": "Diffusion",
+            "year": 2021,
+            "description": "Diffusion dans l'espace latent d'un VAE pré-entraîné, réduisant drastiquement les coûts computationnels tout en maintenant la qualité.",
+            "mainIdea": "VAE encoder E compresse x→z, diffusion dans l'espace latent z, VAE decoder D reconstruit z→x. Cross-attention pour le conditioning textuel.",
+            "keyContributions": [
+                "Diffusion dans l'espace latent efficace",
+                "Architecture U-Net avec cross-attention",
+                "Democratisation de la génération text-to-image"
+            ],
+            "papers": [
+                {
+                    "title": "High-Resolution Image Synthesis with Latent Diffusion Models",
+                    "authors": ["Rombach, R.", "Blattmann, A.", "Lorenz, D.", "et al."],
+                    "year": 2021,
+                    "url": "https://arxiv.org/abs/2112.10752",
+                    "venue": "CVPR 2022"
+                }
+            ],
+            "code": [
+                {
+                    "language": "PyTorch",
+                    "url": "https://github.com/CompVis/stable-diffusion"
+                }
+            ],
+            "metrics": {
+                "citations": 5000,
+                "influence": 10
+            },
+            "tags": ["latent-space", "text-to-image", "efficient"],
+            "size": 25
+        },
+        {
+            "id": "GPT",
+            "name": "GPT",
+            "fullName": "Generative Pre-trained Transformer",
+            "category": "Transformer",
+            "year": 2018,
+            "description": "Premier modèle de langage à grande échelle utilisant uniquement l'architecture Transformer decoder pour la génération autorégressive.",
+            "mainIdea": "Pré-entraînement non supervisé sur prédiction du token suivant, puis fine-tuning supervisé. Architecture Transformer decoder-only avec attention causale.",
+            "keyContributions": [
+                "Démonstration du pré-entraînement génératif à grande échelle",
+                "Transfer learning efficace pour NLP",
+                "Architecture decoder-only pour la génération"
+            ],
+            "papers": [
+                {
+                    "title": "Improving Language Understanding by Generative Pre-Training",
+                    "authors": ["Radford, A.", "Narasimhan, K.", "Salimans, T.", "Sutskever, I."],
+                    "year": 2018,
+                    "url": "https://openai.com/research/language-unsupervised",
+                    "venue": "OpenAI Blog"
+                }
+            ],
+            "metrics": {
+                "citations": 10000,
+                "influence": 9
+            },
+            "tags": ["language-model", "pre-training", "autoregressive"],
+            "size": 30
+        }
+    ],
+    "links": [
+        {
+            "source": "VAE",
+            "target": "Beta-VAE",
+            "type": "improves-upon",
+            "description": "Ajoute le paramètre β pour le disentanglement"
+        },
+        {
+            "source": "VAE",
+            "target": "VQ-VAE",
+            "type": "variation-of",
+            "description": "Remplace l'espace latent continu par un codebook discret"
+        },
+        {
+            "source": "VQ-VAE",
+            "target": "VQ-VAE-2",
+            "type": "improves-upon",
+            "description": "Ajoute une hiérarchie et des priors autorégressifs"
+        },
+        {
+            "source": "GAN",
+            "target": "DCGAN",
+            "type": "improves-upon",
+            "description": "Introduit les convolutions et stabilise l'entraînement"
+        },
+        {
+            "source": "DCGAN",
+            "target": "StyleGAN",
+            "type": "improves-upon",
+            "description": "Architecture révolutionnaire avec contrôle du style"
+        },
+        {
+            "source": "VAE",
+            "target": "StableDiffusion",
+            "type": "used-in",
+            "description": "VAE utilisé pour l'encodage/décodage latent"
+        },
+        {
+            "source": "DDPM",
+            "target": "StableDiffusion",
+            "type": "improves-upon",
+            "description": "Applique la diffusion dans l'espace latent"
+        }
+    ]
+}

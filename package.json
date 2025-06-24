@@ -1,0 +1,33 @@
+{
+    "name": "generative-models-map",
+    "version": "1.0.0",
+    "description": "Interactive map of generative AI models",
+    "main": "index.html",
+    "scripts": {
+        "start": "http-server -p 8000",
+        "dev": "http-server -p 8000 -c-1",
+        "build": "echo 'No build step required'",
+        "deploy": "gh-pages -d ."
+    },
+    "keywords": [
+        "generative-models",
+        "ai",
+        "machine-learning",
+        "visualization",
+        "d3js"
+    ],
+    "author": "Your Name",
+    "license": "MIT",
+    "devDependencies": {
+        "http-server": "^14.1.1",
+        "gh-pages": "^5.0.0"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/your-username/generative-models-map.git"
+    },
+    "bugs": {
+        "url": "https://github.com/your-username/generative-models-map/issues"
+    },
+    "homepage": "https://github.com/your-username/generative-models-map#readme"
+}
