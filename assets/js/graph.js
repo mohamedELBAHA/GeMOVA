@@ -303,7 +303,7 @@ class GraphVisualization {
         if (node.keyContributions && node.keyContributions.length > 0) {
             contributionsHTML = `
                 <div class="mt-4">
-                    <h3 class="font-semibold mb-2">Contributions Clés</h3>
+                    <h3 class="font-semibold mb-2">Key Contributions</h3>
                     <ul class="list-disc list-inside space-y-1 text-sm text-slate-400">
                         ${node.keyContributions.map(c => `<li>${c}</li>`).join('')}
                     </ul>
@@ -335,7 +335,7 @@ class GraphVisualization {
                 
                 <div class="bg-slate-900/50 p-4 rounded-lg border-l-4" 
                      style="border-color: ${category.color};">
-                    <h3 class="font-semibold text-white mb-2">Idée Principale</h3>
+                    <h3 class="font-semibold text-white mb-2">Main Idea</h3>
                     <p class="text-sm text-slate-400">${node.mainIdea}</p>
                 </div>
                 
@@ -360,8 +360,8 @@ class GraphVisualization {
             </div>
         `;
         
-        // Show panel
-        panel.classList.remove('translate-x-full');
+        // Show panel with consistent animation
+        panel.classList.add('show');
         
         // Setup close button
         document.getElementById('close-panel').addEventListener('click', () => {
@@ -371,7 +371,7 @@ class GraphVisualization {
 
     hideInfoPanel() {
         const panel = document.getElementById('info-panel');
-        panel.classList.add('translate-x-full');
+        panel.classList.remove('show');
     }
 
     highlightConnections(node) {
@@ -410,30 +410,61 @@ class GraphVisualization {
         this.render();
     }
 
+    toggleCategory(category, active) {
+        if (active) {
+            this.activeCategories.add(category);
+        } else {
+            this.activeCategories.delete(category);
+        }
+        this.render();
+    }
+
     searchNodes(query) {
-        const lowerQuery = query.toLowerCase();
+        const lowerQuery = query.toLowerCase().trim();
         
         if (!query) {
+            // Reset all nodes and links to normal opacity
             this.node.style('opacity', 1);
             this.link.style('opacity', 0.5);
+            this.node.classed('search-highlighted', false);
             return;
         }
         
-        // Fade nodes that don't match
+        // Find matching nodes
+        const matchingNodes = new Set();
+        
+        // Fade nodes that don't match and highlight those that do
         this.node.style('opacity', d => {
             const matches = d.name.toLowerCase().includes(lowerQuery) ||
                           d.fullName.toLowerCase().includes(lowerQuery) ||
-                          (d.description && d.description.toLowerCase().includes(lowerQuery));
+                          (d.description && d.description.toLowerCase().includes(lowerQuery)) ||
+                          (d.tags && d.tags.some(tag => tag.toLowerCase().includes(lowerQuery))) ||
+                          (d.keyContributions && d.keyContributions.some(contrib => 
+                              contrib.toLowerCase().includes(lowerQuery)));
+            
+            if (matches) {
+                matchingNodes.add(d.id);
+            }
+            
             return matches ? 1 : 0.2;
+        }).classed('search-highlighted', d => {
+            const matches = d.name.toLowerCase().includes(lowerQuery) ||
+                          d.fullName.toLowerCase().includes(lowerQuery) ||
+                          (d.description && d.description.toLowerCase().includes(lowerQuery)) ||
+                          (d.tags && d.tags.some(tag => tag.toLowerCase().includes(lowerQuery))) ||
+                          (d.keyContributions && d.keyContributions.some(contrib => 
+                              contrib.toLowerCase().includes(lowerQuery)));
+            return matches;
         });
         
-        // Fade links accordingly
+        // Fade links accordingly - show connections between matching nodes
         this.link.style('opacity', l => {
-            const sourceMatch = l.source.name.toLowerCase().includes(lowerQuery) ||
-                              l.source.fullName.toLowerCase().includes(lowerQuery);
-            const targetMatch = l.target.name.toLowerCase().includes(lowerQuery) ||
-                              l.target.fullName.toLowerCase().includes(lowerQuery);
-            return (sourceMatch || targetMatch) ? 0.5 : 0.1;
+            const sourceMatch = matchingNodes.has(l.source.id);
+            const targetMatch = matchingNodes.has(l.target.id);
+            
+            if (sourceMatch && targetMatch) return 0.8; // Both nodes match
+            if (sourceMatch || targetMatch) return 0.4; // One node matches
+            return 0.05; // No matches
         });
     }
 
@@ -446,14 +477,41 @@ class GraphVisualization {
         this.node.selectAll('circle')
             .style('stroke', isLightMode ? '#f8fafc' : '#ffffff');
         
+        // Update link colors for light mode
+        this.link
+            .style('stroke', d => {
+                const originalColor = this.data.linkTypes[d.type].color;
+                return isLightMode ? this.adjustColorForLightMode(originalColor) : originalColor;
+            });
+        
         // Update arrow markers
         const linkTypes = this.data.linkTypes;
         const markers = this.svg.selectAll('marker path');
         markers.style('fill', function() {
             const markerId = d3.select(this.parentNode).attr('id');
             const type = markerId.replace('arrow-', '');
-            return isLightMode ? '#94a3b8' : linkTypes[type].color;
+            const originalColor = linkTypes[type].color;
+            return isLightMode ? '#64748b' : originalColor;
         });
+        
+        // Update SVG background
+        this.svg.style('background-color', isLightMode ? '#f8fafc' : '#0f172a');
+    }
+    
+    adjustColorForLightMode(color) {
+        // Convert bright colors to darker versions for light mode
+        const colorMap = {
+            '#3b82f6': '#1d4ed8', // blue
+            '#ef4444': '#dc2626', // red
+            '#10b981': '#059669', // green
+            '#f59e0b': '#d97706', // yellow
+            '#8b5cf6': '#7c3aed', // purple
+            '#f97316': '#ea580c', // orange
+            '#06b6d4': '#0891b2', // cyan
+            '#84cc16': '#65a30d', // lime
+        };
+        
+        return colorMap[color] || '#64748b';
     }
 }
 

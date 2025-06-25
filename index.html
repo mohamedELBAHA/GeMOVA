@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Carte Interactive des Modèles Génératifs</title>
+    <title>Interactive Generative Models Map</title>
     
     <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='0.9em' font-size='90'>🧠</text></svg>">
@@ -28,7 +28,7 @@
         <div id="loading" class="absolute inset-0 bg-slate-900 flex items-center justify-center z-50">
             <div class="text-center">
                 <div class="animate-spin rounded-full h-16 w-16 border-b-2 border-sky-500 mx-auto mb-4"></div>
-                <p class="text-slate-400">Chargement des modèles...</p>
+                <p class="text-slate-400">Loading models...</p>
             </div>
         </div>
 
@@ -40,14 +40,14 @@
             <div class="absolute top-4 left-4 flex flex-col gap-4 z-10 w-64">
                 <!-- Search -->
                 <div id="search-container" class="panel">
-                    <input type="text" id="search" placeholder="Rechercher un modèle..." 
+                    <input type="text" id="search" placeholder="Search for a model..." 
                            class="bg-slate-900 border border-slate-600 rounded-md px-3 py-2 text-sm w-full">
                 </div>
                 
                 <!-- Timeline -->
                 <div id="timeline-container" class="panel">
                     <label for="year-slider" class="font-bold text-white mb-2 text-sm flex justify-between">
-                        <span>Année</span>
+                        <span>Year</span>
                         <span id="year-label">2023</span>
                     </label>
                     <input type="range" id="year-slider" min="2013" max="2024" value="2024" 
@@ -56,19 +56,29 @@
 
                 <!-- Legends -->
                 <div id="legends-container" class="panel">
-                    <h3 class="font-bold text-white mb-3 text-sm">Catégories</h3>
+                    <div class="flex justify-between items-center mb-3">
+                        <h3 class="font-bold text-white text-sm">Categories</h3>
+                        <button id="reset-categories" class="text-xs text-sky-500 hover:text-sky-400 transition-colors">
+                            Reset
+                        </button>
+                    </div>
                     <div id="category-legend"></div>
                     
-                    <h3 class="font-bold text-white mb-3 mt-4 text-sm">Types de Liens</h3>
+                    <div class="flex justify-between items-center mb-3 mt-4">
+                        <h3 class="font-bold text-white text-sm">Link Types</h3>
+                        <button id="reset-links" class="text-xs text-sky-500 hover:text-sky-400 transition-colors">
+                            Reset
+                        </button>
+                    </div>
                     <div id="link-legend" class="space-y-2"></div>
                 </div>
             </div>
 
             <!-- Info Panel -->
-            <div id="info-panel" class="info-panel transform translate-x-full"></div>
+            <div id="info-panel" class="info-panel"></div>
             
             <!-- Theme Toggle -->
-            <button id="theme-toggle" class="absolute top-4 right-4 z-50 p-2 rounded-lg shadow-xl panel">
+            <button id="theme-toggle" class="absolute top-4 right-4 z-50 p-2 rounded-lg shadow-xl panel button-ripple">
                 <svg id="theme-icon-dark" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
                           d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/>
