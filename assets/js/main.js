@@ -46,15 +46,8 @@ class GenerativeModelsApp {
     }
 
     setupUI() {
-        // Year slider
-        const yearSlider = document.getElementById('year-slider');
-        const yearLabel = document.getElementById('year-label');
-        
-        yearSlider.addEventListener('input', (e) => {
-            const year = parseInt(e.target.value);
-            yearLabel.textContent = year;
-            this.graph.filterByYear(year);
-        });
+        // Dual range year sliders
+        this.setupYearRangeSliders();
 
         // Search functionality
         const searchInput = document.getElementById('search');
@@ -99,6 +92,58 @@ class GenerativeModelsApp {
                 month: 'long', 
                 day: 'numeric' 
             });
+    }
+
+    setupYearRangeSliders() {
+        const minSlider = document.getElementById('year-min-slider');
+        const maxSlider = document.getElementById('year-max-slider');
+        const rangeLabel = document.getElementById('year-range-label');
+        const rangeTrack = document.getElementById('year-range-track');
+        
+        const MIN_YEAR = 2013;
+        const MAX_YEAR = 2024;
+        
+        let minValue = parseInt(minSlider.value);
+        let maxValue = parseInt(maxSlider.value);
+        
+        const updateRange = () => {
+            // Ensure min is not greater than max
+            if (minValue > maxValue) {
+                if (event.target === minSlider) {
+                    maxValue = minValue;
+                    maxSlider.value = maxValue;
+                } else {
+                    minValue = maxValue;
+                    minSlider.value = minValue;
+                }
+            }
+            
+            // Update label
+            rangeLabel.textContent = `${minValue} - ${maxValue}`;
+            
+            // Update visual track
+            const minPercent = ((minValue - MIN_YEAR) / (MAX_YEAR - MIN_YEAR)) * 100;
+            const maxPercent = ((maxValue - MIN_YEAR) / (MAX_YEAR - MIN_YEAR)) * 100;
+            
+            rangeTrack.style.left = `${minPercent}%`;
+            rangeTrack.style.width = `${maxPercent - minPercent}%`;
+            
+            // Update graph
+            this.graph.filterByYearRange(minValue, maxValue);
+        };
+        
+        minSlider.addEventListener('input', (event) => {
+            minValue = parseInt(event.target.value);
+            updateRange();
+        });
+        
+        maxSlider.addEventListener('input', (event) => {
+            maxValue = parseInt(event.target.value);
+            updateRange();
+        });
+        
+        // Initial setup
+        updateRange();
     }
 
     setupCategoryFilters() {

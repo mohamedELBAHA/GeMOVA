@@ -1,4 +1,6 @@
 // Graph visualization module
+import { processMathInText, renderMathInElement } from './utils.js';
+
 class GraphVisualization {
     constructor(containerId, data) {
         this.containerId = containerId;
@@ -16,7 +18,7 @@ class GraphVisualization {
         this.selectedNode = null;
         this.activeCategories = new Set(Object.keys(data.categories));
         this.activeLinkTypes = new Set(Object.keys(data.linkTypes));
-        this.currentYear = 2024;
+        this.yearRange = { min: 2013, max: 2024 };
         
         // Initialize
         this.init();
@@ -232,9 +234,10 @@ class GraphVisualization {
     }
 
     getFilteredData() {
-        // Filter nodes by year
+        // Filter nodes by year range
         const filteredNodes = this.data.nodes.filter(d => 
-            d.year <= this.currentYear && 
+            d.year >= this.yearRange.min && 
+            d.year <= this.yearRange.max && 
             this.activeCategories.has(d.category)
         );
         
@@ -305,7 +308,7 @@ class GraphVisualization {
                 <div class="mt-4">
                     <h3 class="font-semibold mb-2">Key Contributions</h3>
                     <ul class="list-disc list-inside space-y-1 text-sm text-slate-400">
-                        ${node.keyContributions.map(c => `<li>${c}</li>`).join('')}
+                        ${node.keyContributions.map(c => `<li>${processMathInText(c)}</li>`).join('')}
                     </ul>
                 </div>
             `;
@@ -331,12 +334,12 @@ class GraphVisualization {
                     </span>
                 </div>
                 
-                <p class="text-slate-300 leading-relaxed">${node.description}</p>
+                <p class="text-slate-300 leading-relaxed">${processMathInText(node.description)}</p>
                 
                 <div class="bg-slate-900/50 p-4 rounded-lg border-l-4" 
                      style="border-color: ${category.color};">
                     <h3 class="font-semibold text-white mb-2">Main Idea</h3>
-                    <p class="text-sm text-slate-400">${node.mainIdea}</p>
+                    <p class="text-sm text-slate-400">${processMathInText(node.mainIdea)}</p>
                 </div>
                 
                 ${contributionsHTML}
@@ -362,6 +365,9 @@ class GraphVisualization {
         
         // Show panel with consistent animation
         panel.classList.add('show');
+        
+        // Render mathematical expressions
+        renderMathInElement(panel);
         
         // Setup close button
         document.getElementById('close-panel').addEventListener('click', () => {
@@ -396,8 +402,9 @@ class GraphVisualization {
         this.link.classed('highlighted', false).classed('faded', false);
     }
 
-    filterByYear(year) {
-        this.currentYear = year;
+    filterByYearRange(minYear, maxYear) {
+        this.yearRange.min = minYear;
+        this.yearRange.max = maxYear;
         this.render();
     }
 

@@ -314,6 +314,79 @@ body.light-mode #year-slider {
     border: none;
 }
 
+/* Dual Range Slider */
+.dual-range-slider {
+    width: 100%;
+    height: 0.5rem;
+    appearance: none;
+    -webkit-appearance: none;
+    cursor: pointer;
+    background: transparent;
+    pointer-events: none;
+}
+
+.dual-range-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    background: #3b82f6;
+    cursor: pointer;
+    border-radius: 50%;
+    pointer-events: all;
+    position: relative;
+    z-index: 3;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    transition: all 0.2s ease;
+}
+
+.dual-range-slider::-webkit-slider-thumb:hover {
+    transform: scale(1.1);
+    background: #2563eb;
+}
+
+.dual-range-slider::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+    background: #3b82f6;
+    cursor: pointer;
+    border-radius: 50%;
+    border: none;
+    pointer-events: all;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    transition: all 0.2s ease;
+}
+
+.dual-range-slider::-moz-range-thumb:hover {
+    transform: scale(1.1);
+    background: #2563eb;
+}
+
+#year-range-track {
+    background: linear-gradient(90deg, #3b82f6, #06b6d4);
+    transition: all 0.3s ease;
+}
+
+body.light-mode .dual-range-slider::-webkit-slider-thumb {
+    background: #1d4ed8;
+}
+
+body.light-mode .dual-range-slider::-webkit-slider-thumb:hover {
+    background: #1e40af;
+}
+
+body.light-mode .dual-range-slider::-moz-range-thumb {
+    background: #1d4ed8;
+}
+
+body.light-mode .dual-range-slider::-moz-range-thumb:hover {
+    background: #1e40af;
+}
+
+body.light-mode #year-range-track {
+    background: linear-gradient(90deg, #1d4ed8, #0891b2);
+}
+
 /* Text Elements */
 h3 {
     color: #ffffff;
@@ -460,6 +533,44 @@ body.light-mode #theme-toggle:hover {
 
 .fade-in {
     animation: fadeIn 0.5s ease-out;
+}
+
+/* MathJax Styling */
+.MathJax {
+    color: inherit !important;
+}
+
+.MathJax_Display {
+    color: inherit !important;
+}
+
+body.light-mode .MathJax {
+    color: #1e293b !important;
+}
+
+body.light-mode .MathJax_Display {
+    color: #1e293b !important;
+}
+
+/* Ensure MathJax inherits text color properly */
+.info-panel .MathJax {
+    color: inherit !important;
+}
+
+.info-panel .text-slate-400 .MathJax {
+    color: #94a3b8 !important;
+}
+
+body.light-mode .info-panel .text-slate-400 .MathJax {
+    color: #64748b !important;
+}
+
+.info-panel .text-slate-300 .MathJax {
+    color: #cbd5e1 !important;
+}
+
+body.light-mode .info-panel .text-slate-300 .MathJax {
+    color: #475569 !important;
 }
 
 /* SVG Icons Color */

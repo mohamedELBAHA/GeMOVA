@@ -138,3 +138,86 @@ export function setupEventListeners() {
     // Placeholder for additional event listeners
     // This function can be extended as needed
 }
+
+// Math rendering utilities
+export function processMathInText(text) {
+    if (!text) return text;
+    
+    // Common mathematical expressions in the data that need LaTeX formatting
+    let processedText = text
+        // Replace common mathematical notation
+        .replace(/\bELBO\b/g, '$\\text{ELBO}$')
+        .replace(/\bKL\b(?!\s*divergence)/g, '$\\text{KL}$')
+        .replace(/KL divergence/g, '$\\text{KL}$ divergence')
+        .replace(/log\(([^)]+)\)/g, '$\\log($1)$')
+        .replace(/\blog\s+/g, '$\\log$ ')
+        .replace(/\bexp\(/g, '$\\exp($')
+        .replace(/q\(([^)]+)\)/g, '$q($1)$')
+        .replace(/p_θ\(([^)]+)\)/g, '$p_\\theta($1)$')
+        .replace(/p_\\theta\(([^)]+)\)/g, '$p_\\theta($1)$')
+        .replace(/G\(z\)/g, '$G(z)$')
+        .replace(/D\(([^)]+)\)/g, '$D($1)$')
+        .replace(/E\(([^)]+)\)/g, '$E($1)$')
+        // Handle subscripts and superscripts
+        .replace(/x_(\d+)/g, '$x_{$1}$')
+        .replace(/x_\{([^}]+)\}/g, '$x_{$1}$')
+        .replace(/z_(\d+)/g, '$z_{$1}$')
+        .replace(/t_(\d+)/g, '$t_{$1}$')
+        .replace(/x_{t-1}/g, '$x_{t-1}$')
+        .replace(/x_{t\+1}/g, '$x_{t+1}$')
+        // Handle Greek letters
+        .replace(/β > 1/g, '$\\beta > 1$')  
+        .replace(/β = 1/g, '$\\beta = 1$')
+        .replace(/\bβ\b/g, '$\\beta$')
+        .replace(/\bθ\b/g, '$\\theta$')
+        .replace(/\bε\b/g, '$\\varepsilon$')
+        .replace(/\bμ\b/g, '$\\mu$')
+        .replace(/\bσ\b/g, '$\\sigma$')
+        .replace(/\bα\b/g, '$\\alpha$')
+        // Handle mathematical expressions
+        .replace(/E\[([^\]]+)\]/g, '$\\mathbb{E}[$1]$')
+        .replace(/\bVAE\b(?=\s|$|\.)/g, '$\\text{VAE}$')
+        .replace(/\bGAN\b(?=\s|$|\.)/g, '$\\text{GAN}$')
+        .replace(/\bU-Net\b/g, '$\\text{U-Net}$')
+        .replace(/PixelCNN/g, '$\\text{PixelCNN}$')
+        .replace(/AdaIN/g, '$\\text{AdaIN}$')
+        // Handle arrows and mappings
+        .replace(/f:Z→W/g, '$f: \\mathcal{Z} \\to \\mathcal{W}$')
+        .replace(/→/g, '$\\to$')
+        .replace(/x→z/g, '$x \\to z$')
+        .replace(/z→x/g, '$z \\to x$')
+        // Handle inequalities and comparisons
+        .replace(/≥/g, '$\\geq$')
+        .replace(/≤/g, '$\\leq$')
+        .replace(/>/g, '$>$')
+        .replace(/</g, '$<$')
+        // Handle mathematical operators in context
+        .replace(/\s\+\s/g, ' $+$ ')
+        .replace(/\s-\s/g, ' $-$ ')
+        .replace(/\s\*\s/g, ' $\\cdot$ ')
+        // Fix any double dollar signs that might have been created
+        .replace(/\$\$+/g, '$');
+    
+    return processedText;
+}
+
+// Function to render math in a DOM element after content is added
+export function renderMathInElement(element) {
+    if (window.MathJax && window.MathJax.typesetPromise) {
+        window.MathJax.typesetPromise([element]).catch((err) => {
+            console.warn('MathJax rendering error:', err);
+        });
+    } else {
+        // If MathJax is not ready, wait for it
+        const checkMathJax = () => {
+            if (window.MathJax && window.MathJax.typesetPromise) {
+                window.MathJax.typesetPromise([element]).catch((err) => {
+                    console.warn('MathJax rendering error:', err);
+                });
+            } else {
+                setTimeout(checkMathJax, 100);
+            }
+        };
+        checkMathJax();
+    }
+}

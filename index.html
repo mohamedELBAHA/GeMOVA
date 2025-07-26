@@ -14,6 +14,25 @@
     <!-- D3.js -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
     
+    <!-- MathJax for mathematical expressions -->
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']],
+                processEscapes: true,
+                processEnvironments: true
+            },
+            options: {
+                skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+                ignoreHtmlClass: 'tex2jax_ignore',
+                processHtmlClass: 'tex2jax_process'
+            }
+        };
+    </script>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -46,12 +65,23 @@
                 
                 <!-- Timeline -->
                 <div id="timeline-container" class="panel">
-                    <label for="year-slider" class="font-bold text-white mb-2 text-sm flex justify-between">
-                        <span>Year</span>
-                        <span id="year-label">2023</span>
+                    <label class="font-bold text-white mb-2 text-sm flex justify-between">
+                        <span>Year Range</span>
+                        <span id="year-range-label">2013 - 2024</span>
                     </label>
-                    <input type="range" id="year-slider" min="2013" max="2024" value="2024" 
-                           class="w-full h-2 bg-slate-700 rounded-lg appearance-none cursor-pointer">
+                    <div class="relative">
+                        <input type="range" id="year-min-slider" min="2013" max="2024" value="2013" 
+                               class="dual-range-slider absolute w-full h-2 bg-slate-700 rounded-lg appearance-none cursor-pointer">
+                        <input type="range" id="year-max-slider" min="2013" max="2024" value="2024" 
+                               class="dual-range-slider absolute w-full h-2 bg-transparent rounded-lg appearance-none cursor-pointer">
+                        <div class="relative h-2 bg-slate-700 rounded-lg mt-2">
+                            <div id="year-range-track" class="absolute h-full bg-sky-500 rounded-lg"></div>
+                        </div>
+                    </div>
+                    <div class="flex justify-between text-xs text-slate-400 mt-1">
+                        <span>2013</span>
+                        <span>2024</span>
+                    </div>
                 </div>
 
                 <!-- Legends -->

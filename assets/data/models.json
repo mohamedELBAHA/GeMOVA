@@ -72,7 +72,7 @@
             "category": "VAE",
             "year": 2013,
             "description": "Probabilistic generative model that learns a latent representation of data by maximizing a lower bound of the likelihood (ELBO). Combines an encoder that produces a latent distribution and a decoder that reconstructs the data.",
-            "mainIdea": "Encode data into a probabilistic latent space (mean and variance) and decode to reconstruct. Uses the reparameterization trick to enable backpropagation through stochastic sampling.",
+            "mainIdea": "Encode data into a probabilistic latent space (μ, σ) and decode to reconstruct. Uses the reparameterization trick z = μ + σ ⊙ ε where ε ~ N(0,I) to enable backpropagation through stochastic sampling.",
             "keyContributions": [
                 "Introduction of the variational framework for autoencoders",
                 "Reparameterization trick for training",
@@ -107,7 +107,7 @@
             "category": "VAE",
             "year": 2017,
             "description": "Extension of VAE that encourages learning of disentangled representations by adding a hyperparameter β > 1 to the KL divergence term, forcing a more factorized representation.",
-            "mainIdea": "Weight the KL term with β > 1 to force a more factorized representation in the latent space. Allows controlling the trade-off between reconstruction and disentanglement.",
+            "mainIdea": "Modify the ELBO objective to L = E[log p(x|z)] - βD_KL(q(z|x)||p(z)) where β > 1 increases the pressure on KL term, forcing a more factorized latent representation.",
             "keyContributions": [
                 "Introduction of β parameter to control disentanglement",
                 "Demonstration that β > 1 encourages factorized representations",
