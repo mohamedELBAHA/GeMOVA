@@ -158,7 +158,6 @@ class GenerativeModelsApp {
                 <input type="checkbox" checked class="filter-checkbox category-filter" 
                        style="--checkbox-color: ${category.color}"
                        data-category="${key}">
-                <div class="w-4 h-4 rounded-full" style="background-color: ${category.color}"></div>
                 <span class="text-sm legend-text">${category.name}</span>
             `;
             
