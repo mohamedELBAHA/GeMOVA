@@ -1,8 +1,8 @@
 {
     "metadata": {
-        "version": "1.0.0",
-        "lastUpdated": "2024-01-15",
-        "contributors": ["Your Name"],
+        "version": "1.1.0",
+        "lastUpdated": "2025-10-29",
+        "contributors": ["Mohamed El Baha & Fouad Oubari"],
         "description": "Interactive database of generative AI models"
     },
     "categories": {
@@ -396,7 +396,374 @@
             },
             "tags": ["language-model", "pre-training", "autoregressive"],
             "size": 30
-        }
+        },
+        {
+            "id": "CVAE",
+            "name": "CVAE",
+            "fullName": "Conditional Variational Autoencoder",
+            "category": "VAE",
+            "year": 2015,
+            "description": "Extends the VAE to allow conditional generation by incorporating labels or attributes into both encoder and decoder.",
+            "mainIdea": "Model p(x|y) via latent variable z, optimizing conditional ELBO; enables label-conditioned generation.",
+            "keyContributions": [
+              "Introduced conditional generative modeling for VAEs",
+              "Enabled controllable synthesis and label-based generation"
+            ],
+            "papers": [
+              {
+                "title": "Conditional Variational Autoencoder",
+                "authors": ["Sohn, K.", "Lee, H.", "Yan, X."],
+                "year": 2015,
+                "url": "https://arxiv.org/abs/1511.06335",
+                "venue": "NIPS 2015"
+              }
+            ],
+            "metrics": {"citations": 6000, "influence": 7},
+            "tags": ["conditional", "representation-learning", "generative"],
+            "size": 18
+          },
+          {
+            "id": "IWAE",
+            "name": "IWAE",
+            "fullName": "Importance Weighted Autoencoder",
+            "category": "VAE",
+            "year": 2015,
+            "description": "Tightens the variational lower bound using multiple importance-weighted samples, improving likelihood estimates.",
+            "mainIdea": "Uses multiple samples from q(z|x) to compute a tighter bound on log-likelihood, improving model learning.",
+            "keyContributions": [
+              "Introduced importance weighting for tighter ELBO",
+              "Improved generative likelihood estimation"
+            ],
+            "papers": [
+              {
+                "title": "Importance Weighted Autoencoders",
+                "authors": ["Burda, Y.", "Grosse, R.", "Salakhutdinov, R."],
+                "year": 2015,
+                "url": "https://arxiv.org/abs/1509.00519",
+                "venue": "ICLR 2016"
+              }
+            ],
+            "metrics": {"citations": 4000, "influence": 6},
+            "tags": ["variational", "likelihood", "theory"],
+            "size": 17
+          },
+          {
+            "id": "NVAE",
+            "name": "NVAE",
+            "fullName": "Neural VAE",
+            "category": "VAE",
+            "year": 2020,
+            "description": "Hierarchical convolutional VAE that scales to large, high-resolution image synthesis.",
+            "mainIdea": "Uses deep hierarchical latent structure and normalizing flows in latent space for better flexibility and image quality.",
+            "keyContributions": [
+              "Hierarchical latent structure",
+              "Scalable architecture for large images"
+            ],
+            "papers": [
+              {
+                "title": "NVAE: A Deep Hierarchical Variational Autoencoder",
+                "authors": ["Vahdat, A.", "Kautz, J."],
+                "year": 2020,
+                "url": "https://arxiv.org/abs/2007.03898",
+                "venue": "NeurIPS 2020"
+              }
+            ],
+            "metrics": {"citations": 700, "influence": 7},
+            "tags": ["hierarchical", "image-generation"],
+            "size": 18
+          },
+          {
+            "id": "Diffusion-VAE",
+            "name": "Diffusion-VAE",
+            "fullName": "Diffusion Variational Autoencoder",
+            "category": "VAE",
+            "year": 2022,
+            "description": "Integrates diffusion processes into the latent space of VAEs, improving sample fidelity and robustness.",
+            "mainIdea": "Combines diffusion noise modeling and VAE latent regularization, bridging the two paradigms.",
+            "keyContributions": [
+              "Bridge between VAEs and diffusion models",
+              "Improved generative performance"
+            ],
+            "metrics": {"citations": 300, "influence": 6},
+            "tags": ["hybrid", "diffusion", "vae"],
+            "size": 17
+          },
+      
+          {
+            "id": "cGAN",
+            "name": "cGAN",
+            "fullName": "Conditional GAN",
+            "category": "GAN",
+            "year": 2014,
+            "description": "Extends GANs by conditioning both generator and discriminator on auxiliary information (labels or attributes).",
+            "mainIdea": "Input y concatenated with z and x for G and D respectively to enforce conditional generation.",
+            "keyContributions": [
+              "Introduced conditioning in GANs",
+              "Foundation for class-conditional synthesis"
+            ],
+            "metrics": {"citations": 8000, "influence": 8},
+            "tags": ["conditional", "adversarial"],
+            "size": 20
+          },
+          {
+            "id": "Pix2Pix",
+            "name": "Pix2Pix",
+            "fullName": "Image-to-Image Translation GAN",
+            "category": "GAN",
+            "year": 2016,
+            "description": "Uses paired data to learn direct image-to-image mapping via conditional GAN loss.",
+            "mainIdea": "Combines L1 reconstruction with adversarial loss for paired translation tasks.",
+            "metrics": {"citations": 17000, "influence": 8},
+            "tags": ["image-translation", "conditional", "supervised"],
+            "size": 22
+          },
+          {
+            "id": "CycleGAN",
+            "name": "CycleGAN",
+            "fullName": "Cycle-Consistent GAN",
+            "category": "GAN",
+            "year": 2017,
+            "description": "Learns image translation between two domains without paired data using cycle-consistency loss.",
+            "mainIdea": "Two GANs G:X→Y and F:Y→X trained with cycle-consistency loss to ensure invertibility.",
+            "metrics": {"citations": 30000, "influence": 9},
+            "tags": ["unsupervised", "image-translation"],
+            "size": 23
+          },
+          {
+            "id": "WGAN",
+            "name": "WGAN",
+            "fullName": "Wasserstein GAN",
+            "category": "GAN",
+            "year": 2017,
+            "description": "Introduces Wasserstein distance for stable GAN training and meaningful loss metrics.",
+            "mainIdea": "Uses Earth Mover’s distance to improve gradient behavior.",
+            "metrics": {"citations": 18000, "influence": 10},
+            "tags": ["stability", "theory", "training"],
+            "size": 25
+          },
+          {
+            "id": "WGAN-GP",
+            "name": "WGAN-GP",
+            "fullName": "Wasserstein GAN with Gradient Penalty",
+            "category": "GAN",
+            "year": 2017,
+            "description": "Improves WGAN by replacing weight clipping with gradient penalty for enforcing Lipschitz constraint.",
+            "mainIdea": "Adds gradient norm regularization to stabilize GAN training.",
+            "metrics": {"citations": 15000, "influence": 9},
+            "tags": ["stability", "gradient-penalty"],
+            "size": 23
+          },
+          {
+            "id": "BigGAN",
+            "name": "BigGAN",
+            "fullName": "Large-Scale Class-Conditional GAN",
+            "category": "GAN",
+            "year": 2018,
+            "description": "Scales up GANs to large architectures with class conditioning and orthogonal regularization.",
+            "mainIdea": "Large-batch training and hierarchical latent conditioning for high-fidelity generation.",
+            "metrics": {"citations": 4000, "influence": 9},
+            "tags": ["scalability", "class-conditional"],
+            "size": 24
+          },
+          {
+            "id": "StyleGAN2",
+            "name": "StyleGAN2",
+            "fullName": "Style-Based GAN v2",
+            "category": "GAN",
+            "year": 2020,
+            "description": "Improves StyleGAN by removing artifacts and refining normalization.",
+            "mainIdea": "Revises progressive growing, introduces path length regularization.",
+            "metrics": {"citations": 7000, "influence": 10},
+            "tags": ["style-control", "artifact-free"],
+            "size": 25
+          },
+      
+          {
+            "id": "ScoreModel",
+            "name": "Score-Based Model",
+            "fullName": "Noise Conditional Score Network",
+            "category": "Diffusion",
+            "year": 2020,
+            "description": "Trains a neural net to estimate ∇log p(x) (score) under noise perturbations; equivalent to diffusion.",
+            "mainIdea": "Defines generative process via reverse-time SDE solving from noise to data.",
+            "metrics": {"citations": 7000, "influence": 9},
+            "tags": ["score-matching", "diffusion"],
+            "size": 24
+          },
+          {
+            "id": "GuidedDiffusion",
+            "name": "Guided Diffusion",
+            "fullName": "Classifier-Guided Diffusion",
+            "category": "Diffusion",
+            "year": 2021,
+            "description": "Guides diffusion sampling using gradient of a classifier for controllable generation.",
+            "mainIdea": "∇log p(y|x) term added to reverse process to guide toward class labels.",
+            "metrics": {"citations": 4000, "influence": 9},
+            "tags": ["conditional", "guidance"],
+            "size": 22
+          },
+          {
+            "id": "DALLE2",
+            "name": "DALL·E 2",
+            "fullName": "CLIP + Diffusion Text-to-Image Model",
+            "category": "Diffusion",
+            "year": 2022,
+            "description": "Combines CLIP embeddings with diffusion decoder for text-to-image synthesis.",
+            "mainIdea": "Latent representation from CLIP guides diffusion denoising decoder.",
+            "metrics": {"citations": 5000, "influence": 10},
+            "tags": ["text-to-image", "multimodal"],
+            "size": 26
+          },
+          {
+            "id": "Imagen",
+            "name": "Imagen",
+            "fullName": "Large Language-Guided Diffusion",
+            "category": "Diffusion",
+            "year": 2022,
+            "description": "Uses T5 text encoder for conditioning diffusion models, achieving photorealism.",
+            "mainIdea": "Language understanding fused with diffusion synthesis pipeline.",
+            "metrics": {"citations": 3000, "influence": 10},
+            "tags": ["text-to-image", "language-vision"],
+            "size": 25
+          },
+          {
+            "id": "SDXL",
+            "name": "SDXL",
+            "fullName": "Stable Diffusion XL",
+            "category": "Diffusion",
+            "year": 2023,
+            "description": "Upgraded latent diffusion model with modular architecture and improved quality.",
+            "mainIdea": "Refined UNet backbone and enhanced text encoder (OpenCLIP).",
+            "metrics": {"citations": 500, "influence": 9},
+            "tags": ["latent-space", "high-resolution"],
+            "size": 25
+          },
+      
+          {
+            "id": "RealNVP",
+            "name": "RealNVP",
+            "fullName": "Real Non-Volume Preserving Flow",
+            "category": "Flow",
+            "year": 2017,
+            "description": "Scalable normalizing flow using affine coupling layers.",
+            "mainIdea": "Alternating masked transformations with tractable Jacobians.",
+            "metrics": {"citations": 4000, "influence": 8},
+            "tags": ["invertible", "flow"],
+            "size": 20
+          },
+          {
+            "id": "Glow",
+            "name": "Glow",
+            "fullName": "Generative Flow with Invertible 1x1 Convolutions",
+            "category": "Flow",
+            "year": 2018,
+            "description": "Simplifies flow architectures via invertible 1x1 convolutions.",
+            "mainIdea": "Efficient, exact likelihood computation and reversible mapping.",
+            "metrics": {"citations": 5000, "influence": 8},
+            "tags": ["invertible", "normalizing-flow"],
+            "size": 22
+          },
+          {
+            "id": "Flow++",
+            "name": "Flow++",
+            "fullName": "Improved Flow-Based Model",
+            "category": "Flow",
+            "year": 2019,
+            "description": "Introduces variational dequantization and mixture coupling layers.",
+            "mainIdea": "Enhances expressivity and sample fidelity of flow models.",
+            "metrics": {"citations": 1000, "influence": 7},
+            "tags": ["variational", "flow"],
+            "size": 20
+          },
+      
+          {
+            "id": "VQ-GAN",
+            "name": "VQ-GAN",
+            "fullName": "Vector Quantized GAN",
+            "category": "VAE",
+            "year": 2021,
+            "description": "Combines VQ-VAE discrete representations with adversarial loss for high-fidelity synthesis.",
+            "mainIdea": "Trains autoencoder with perceptual + adversarial losses in latent space.",
+            "metrics": {"citations": 4000, "influence": 10},
+            "tags": ["discrete-latent", "hybrid", "gan"],
+            "size": 25
+          },
+          {
+            "id": "MaskGIT",
+            "name": "MaskGIT",
+            "fullName": "Masked Generative Image Transformer",
+            "category": "Transformer",
+            "year": 2022,
+            "description": "Token-based parallel image generation inspired by masked language modeling.",
+            "mainIdea": "Predicts masked tokens iteratively with bidirectional transformer.",
+            "metrics": {"citations": 800, "influence": 9},
+            "tags": ["transformer", "diffusion", "discrete"],
+            "size": 22
+          },
+          {
+            "id": "LCM",
+            "name": "LCM",
+            "fullName": "Latent Consistency Model",
+            "category": "Diffusion",
+            "year": 2023,
+            "description": "Trains consistency functions in latent space for faster diffusion inference.",
+            "mainIdea": "Achieves 10–20× faster generation than standard diffusion models.",
+            "metrics": {"citations": 200, "influence": 8},
+            "tags": ["consistency", "acceleration"],
+            "size": 21
+          },
+          {
+            "id": "EBM-Score",
+            "name": "EBM",
+            "fullName": "Energy-Based Model (Score Matching Revival)",
+            "category": "EBM",
+            "year": 2020,
+            "description": "Revives classical energy-based modeling by learning unnormalized densities through score matching. Connects directly to modern diffusion models.",
+            "mainIdea": "Trains neural network Eθ(x) to assign low energy to data and high energy to non-data; learns ∇xEθ(x) as data score.",
+            "keyContributions": [
+              "Revived energy-based learning via score matching",
+              "Unified perspective with diffusion and flow models",
+              "Demonstrated scalable training with Langevin dynamics"
+            ],
+            "papers": [
+              {
+                "title": "Energy-Based Models for Implicit Generation",
+                "authors": ["LeCun, Y.", "Du, Y.", "Gao, T.", "Lee, H."],
+                "year": 2020,
+                "url": "https://arxiv.org/abs/1903.08689",
+                "venue": "NeurIPS 2020"
+              }
+            ],
+            "metrics": { "citations": 1500, "influence": 7 },
+            "tags": ["energy-based", "score-matching", "implicit-generation"],
+            "size": 20
+          },
+          {
+            "id": "Diffusion-EBM",
+            "name": "Diffusion-EBM",
+            "fullName": "Diffusion Energy-Based Model",
+            "category": "EBM",
+            "year": 2022,
+            "description": "Combines energy-based modeling with diffusion processes to stabilize training and improve controllability.",
+            "mainIdea": "Learns energy landscape at each noise level of a diffusion process; bridges EBMs and denoising diffusion models.",
+            "keyContributions": [
+              "Unifies diffusion and energy-based learning",
+              "Improves sample diversity and control",
+              "Demonstrates diffusion as energy minimization"
+            ],
+            "papers": [
+              {
+                "title": "Diffusion Models as Energy-Based Models",
+                "authors": ["Gao, R.", "Song, Y.", "Poole, B.", "Kingma, D."],
+                "year": 2022,
+                "url": "https://arxiv.org/abs/2206.01712",
+                "venue": "ICML 2022"
+              }
+            ],
+            "metrics": { "citations": 600, "influence": 8 },
+            "tags": ["diffusion", "energy", "hybrid"],
+            "size": 21
+          }
     ],
     "links": [
         {
@@ -440,6 +807,50 @@
             "target": "StableDiffusion",
             "type": "improves-upon",
             "description": "Applies diffusion in latent space"
-        }
+        },
+        { "source": "VAE", "target": "CVAE", "type": "variation-of", "description": "Adds conditional variable for controlled generation" },
+        { "source": "VAE", "target": "IWAE", "type": "improves-upon", "description": "Tightens ELBO via importance weighting" },
+        { "source": "VAE", "target": "NVAE", "type": "improves-upon", "description": "Scales VAE architecture for high-resolution images" },
+        { "source": "VAE", "target": "Diffusion-VAE", "type": "combines", "description": "Integrates diffusion into latent space" },
+    
+        { "source": "GAN", "target": "cGAN", "type": "variation-of", "description": "Adds conditional input" },
+        { "source": "cGAN", "target": "Pix2Pix", "type": "variation-of", "description": "Supervised paired translation" },
+        { "source": "Pix2Pix", "target": "CycleGAN", "type": "improves-upon", "description": "Enables unpaired translation" },
+        { "source": "GAN", "target": "WGAN", "type": "improves-upon", "description": "Stabilizes training with Wasserstein loss" },
+        { "source": "WGAN", "target": "WGAN-GP", "type": "improves-upon", "description": "Replaces weight clipping with gradient penalty" },
+        { "source": "DCGAN", "target": "BigGAN", "type": "improves-upon", "description": "Scales architecture and adds class conditioning" },
+        { "source": "StyleGAN", "target": "StyleGAN2", "type": "improves-upon", "description": "Removes artifacts and refines normalization" },
+    
+        { "source": "DDPM", "target": "ScoreModel", "type": "variation-of", "description": "Reformulates diffusion via score estimation" },
+        { "source": "ScoreModel", "target": "GuidedDiffusion", "type": "improves-upon", "description": "Adds classifier-based conditioning" },
+        { "source": "StableDiffusion", "target": "DALLE2", "type": "inspired-by", "description": "Uses CLIP embeddings for guidance" },
+        { "source": "DALLE2", "target": "Imagen", "type": "improves-upon", "description": "Uses larger text encoder and better conditioning" },
+        { "source": "StableDiffusion", "target": "SDXL", "type": "improves-upon", "description": "Upgraded version with modular components" },
+        { "source": "DDPM", "target": "LCM", "type": "improves-upon", "description": "Faster generation via consistency training" },
+    
+        { "source": "RealNVP", "target": "Glow", "type": "improves-upon", "description": "Simplifies invertible layers using 1x1 convolutions" },
+        { "source": "Glow", "target": "Flow++", "type": "improves-upon", "description": "Introduces variational dequantization" },
+    
+        { "source": "VQ-VAE", "target": "VQ-GAN", "type": "improves-upon", "description": "Adds adversarial loss to improve reconstruction quality" },
+        { "source": "VQ-GAN", "target": "MaskGIT", "type": "used-in", "description": "Uses VQ-GAN codebook for discrete tokenization" },
+        { "source": "StableDiffusion", "target": "LCM", "type": "improves-upon", "description": "Accelerates diffusion process in latent space" },
+        {
+            "source": "EBM-Score",
+            "target": "Diffusion-EBM",
+            "type": "improves-upon",
+            "description": "Incorporates diffusion noise levels into energy modeling"
+          },
+          {
+            "source": "ScoreModel",
+            "target": "EBM-Score",
+            "type": "similar-to",
+            "description": "Score-based models share training objective with EBMs"
+          },
+          {
+            "source": "DDPM",
+            "target": "Diffusion-EBM",
+            "type": "combines",
+            "description": "Merges diffusion sampling with energy-based learning"
+          }
     ]
 }

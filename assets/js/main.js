@@ -105,14 +105,15 @@ class GenerativeModelsApp {
         
         let minValue = parseInt(minSlider.value);
         let maxValue = parseInt(maxSlider.value);
+        let lastChanged = null; // Track which slider was last changed
         
         const updateRange = () => {
             // Ensure min is not greater than max
             if (minValue > maxValue) {
-                if (event.target === minSlider) {
+                if (lastChanged === 'min') {
                     maxValue = minValue;
                     maxSlider.value = maxValue;
-                } else {
+                } else if (lastChanged === 'max') {
                     minValue = maxValue;
                     minSlider.value = minValue;
                 }
@@ -134,11 +135,13 @@ class GenerativeModelsApp {
         
         minSlider.addEventListener('input', (event) => {
             minValue = parseInt(event.target.value);
+            lastChanged = 'min';
             updateRange();
         });
         
         maxSlider.addEventListener('input', (event) => {
             maxValue = parseInt(event.target.value);
+            lastChanged = 'max';
             updateRange();
         });
         
@@ -289,11 +292,44 @@ class GenerativeModelsApp {
     }
 }
 
+// Global error handler
+window.addEventListener('error', (event) => {
+    console.error('Global error caught:', event.error);
+    // Prevent default error handling in production
+    // event.preventDefault();
+});
+
+// Global unhandled promise rejection handler
+window.addEventListener('unhandledrejection', (event) => {
+    console.error('Unhandled promise rejection:', event.reason);
+    // Optionally show user feedback
+    const errorMessage = event.reason?.message || 'An unexpected error occurred';
+    console.warn('Error details:', errorMessage);
+});
+
 // Initialize app when DOM is ready
 document.addEventListener('DOMContentLoaded', () => {
     console.log('DOM loaded, initializing app...');
     const app = new GenerativeModelsApp();
     app.initialize().catch(error => {
         console.error('App initialization failed:', error);
+        // Show user-friendly error message
+        const loadingEl = document.getElementById('loading');
+        if (loadingEl) {
+            loadingEl.innerHTML = `
+                <div class="text-center">
+                    <svg class="w-16 h-16 text-red-500 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                              d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                    <p class="text-xl font-semibold mb-2 text-slate-300">Failed to Load</p>
+                    <p class="text-slate-400 mb-4">${error.message || 'Unable to load the application'}</p>
+                    <button onclick="location.reload()" 
+                            class="px-4 py-2 bg-sky-500 hover:bg-sky-600 text-white rounded-lg transition-colors">
+                        Retry
+                    </button>
+                </div>
+            `;
+        }
     });
 });

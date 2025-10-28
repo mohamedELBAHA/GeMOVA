@@ -1,16 +1,37 @@
 // Utility functions
 
-export async function loadModelsData(url) {
-    try {
-        const response = await fetch(url);
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
+export async function loadModelsData(url, retries = 3, delay = 1000) {
+    for (let attempt = 1; attempt <= retries; attempt++) {
+        try {
+            const response = await fetch(url);
+            if (!response.ok) {
+                throw new Error(`Failed to load data: HTTP ${response.status} - ${response.statusText}`);
+            }
+            
+            let data;
+            try {
+                data = await response.json();
+            } catch (parseError) {
+                throw new Error('Invalid JSON format in data file');
+            }
+            
+            return validateData(data);
+        } catch (error) {
+            console.error(`Error loading models data (attempt ${attempt}/${retries}):`, error);
+            
+            // If this is the last attempt, throw the error
+            if (attempt === retries) {
+                // Provide more specific error messages
+                if (error.name === 'TypeError' && error.message.includes('fetch')) {
+                    throw new Error('Network error: Unable to fetch data. Please check your connection.');
+                }
+                throw error;
+            }
+            
+            // Wait before retrying
+            await new Promise(resolve => setTimeout(resolve, delay));
+            console.log(`Retrying data load (${attempt + 1}/${retries})...`);
         }
-        const data = await response.json();
-        return validateData(data);
-    } catch (error) {
-        console.error('Error loading models data:', error);
-        throw error;
     }
 }
 
@@ -203,21 +224,40 @@ export function processMathInText(text) {
 
 // Function to render math in a DOM element after content is added
 export function renderMathInElement(element) {
+    if (!element) {
+        console.warn('renderMathInElement: No element provided');
+        return Promise.resolve();
+    }
+
     if (window.MathJax && window.MathJax.typesetPromise) {
-        window.MathJax.typesetPromise([element]).catch((err) => {
+        return window.MathJax.typesetPromise([element]).catch((err) => {
             console.warn('MathJax rendering error:', err);
         });
     } else {
-        // If MathJax is not ready, wait for it
-        const checkMathJax = () => {
-            if (window.MathJax && window.MathJax.typesetPromise) {
-                window.MathJax.typesetPromise([element]).catch((err) => {
-                    console.warn('MathJax rendering error:', err);
-                });
-            } else {
-                setTimeout(checkMathJax, 100);
-            }
-        };
-        checkMathJax();
+        // If MathJax is not ready, wait for it with timeout
+        return new Promise((resolve, reject) => {
+            let attempts = 0;
+            const maxAttempts = 50; // 5 seconds max wait time
+            
+            const checkMathJax = () => {
+                if (window.MathJax && window.MathJax.typesetPromise) {
+                    window.MathJax.typesetPromise([element])
+                        .then(resolve)
+                        .catch((err) => {
+                            console.warn('MathJax rendering error:', err);
+                            reject(err);
+                        });
+                } else {
+                    attempts++;
+                    if (attempts < maxAttempts) {
+                        setTimeout(checkMathJax, 100);
+                    } else {
+                        console.warn('MathJax failed to load after 5 seconds');
+                        resolve(); // Resolve anyway to prevent hanging
+                    }
+                }
+            };
+            checkMathJax();
+        });
     }
 }

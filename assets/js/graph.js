@@ -12,6 +12,7 @@ class GraphVisualization {
         this.g = null;
         this.simulation = null;
         this.link = null;
+        this.linkLabel = null;
         this.node = null;
         
         // State
@@ -121,6 +122,9 @@ class GraphVisualization {
         // Render links
         this.renderLinks(filteredData.links);
         
+        // Render link labels
+        this.renderLinkLabels(filteredData.links);
+        
         // Render nodes
         this.renderNodes(filteredData.nodes);
         
@@ -156,6 +160,35 @@ class GraphVisualization {
             .attr('stroke-width', 1.5)
             .attr('stroke', d => this.data.linkTypes[d.type].color)
             .attr('marker-end', d => `url(#arrow-${d.type})`);
+    }
+
+    renderLinkLabels(links) {
+        this.linkLabel = this.g.selectAll('.link-label')
+            .data(links, d => `${d.source.id}-${d.target.id}`);
+        
+        // Exit
+        this.linkLabel.exit()
+            .transition()
+            .duration(300)
+            .style('opacity', 0)
+            .remove();
+        
+        // Enter
+        const labelEnter = this.linkLabel.enter()
+            .append('text')
+            .attr('class', 'link-label')
+            .style('opacity', 0);
+        
+        // Merge and update
+        this.linkLabel = labelEnter.merge(this.linkLabel);
+        
+        this.linkLabel
+            .text(d => this.data.linkTypes[d.type].label)
+            .attr('fill', d => this.data.linkTypes[d.type].color)
+            .attr('text-anchor', 'middle')
+            .attr('font-size', '10px')
+            .attr('font-weight', '500')
+            .attr('pointer-events', 'none');
     }
 
     renderNodes(nodes) {
@@ -226,6 +259,12 @@ class GraphVisualization {
                 .attr('y1', d => d.source.y)
                 .attr('x2', d => d.target.x)
                 .attr('y2', d => d.target.y);
+        }
+        
+        if (this.linkLabel) {
+            this.linkLabel
+                .attr('x', d => (d.source.x + d.target.x) / 2)
+                .attr('y', d => (d.source.y + d.target.y) / 2);
         }
         
         if (this.node) {
@@ -395,11 +434,22 @@ class GraphVisualization {
         this.link
             .classed('highlighted', l => l.source.id === node.id || l.target.id === node.id)
             .classed('faded', l => l.source.id !== node.id && l.target.id !== node.id);
+        
+        // Show labels for highlighted links
+        if (this.linkLabel) {
+            this.linkLabel
+                .style('opacity', l => (l.source.id === node.id || l.target.id === node.id) ? 1 : 0);
+        }
     }
 
     unhighlightConnections() {
         this.node.classed('faded', false);
         this.link.classed('highlighted', false).classed('faded', false);
+        
+        // Hide link labels
+        if (this.linkLabel) {
+            this.linkLabel.style('opacity', 0);
+        }
     }
 
     filterByYearRange(minYear, maxYear) {
@@ -490,6 +540,15 @@ class GraphVisualization {
                 const originalColor = this.data.linkTypes[d.type].color;
                 return isLightMode ? this.adjustColorForLightMode(originalColor) : originalColor;
             });
+        
+        // Update link labels for theme
+        if (this.linkLabel) {
+            this.linkLabel
+                .style('fill', d => {
+                    const originalColor = this.data.linkTypes[d.type].color;
+                    return isLightMode ? this.adjustColorForLightMode(originalColor) : originalColor;
+                });
+        }
         
         // Update arrow markers
         const linkTypes = this.data.linkTypes;
